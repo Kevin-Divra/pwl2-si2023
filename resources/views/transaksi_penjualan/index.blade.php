@@ -16,34 +16,35 @@
                 </div>
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
-                        <a href="{{ route('products.create') }}" class="btn btn-md btn-success mb-3">ADD PRODUCT</a>
+                    <a href="/transaksi_penjualan/create" class="btn btn-md btn-success mb-3">ADD PRODUCT</a>
+
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">IMAGE</th>
-                                    <th scope="col">SUPPLIER NAME</th>
-                                    <th scope="col">TITLE</th>
-                                    <th scope="col">CATEGORY</th>
+                                    <th scope="col">TANGGAL_TRANSAKSI</th>
+                                    <th scope="col">NAMA_KASIR</th>
+                                    <th scope="col">NAMA_PRODUK</th>
+                                    <th scope="col">KATEGORI_PRODUK</th>
                                     <th scope="col">PRICE</th>
-                                    <th scope="col">STOCK</th>
+                                    <th scope="col">JUMLAH</th>
+                                    <th scope="col">TOTAL_HARGA</th>
                                     <th scope="col" style="width: 20%">ACTIONS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($products as $product)
+                                @forelse ($transaksi_penjualan as $transaksi)
                                     <tr>
+                                        <td>{{ $transaksi->created_at }}</td>
+                                        <td>{{ $transaksi->nama_kasir }}</td>
+                                        <td>{{ $transaksi->nama_products }}</td>
+                                        <td>{{ $transaksi->product_category_name }}</td>
+                                        <td>{{ "Rp " . number_format($transaksi->harga, 2, ',','.') }}</td>
+                                        <td>{{ $transaksi->jumlah_pembelian }}</td>
+                                        <td>{{ "Rp " . number_format($transaksi->total_harga, 2, ',','.') }}</td>
                                         <td class="text-center">
-                                            <img src="{{ asset('/storage/products/'.$product->irage) }}" class="rounded" alt="width: 150px">
-                                        </td>
-                                        <td>{{ $product->supplier_name }}</td>
-                                        <td>{{ $product->title }}</td>
-                                        <td>{{ $product->product_category_name }}</td>
-                                        <td>{{ "Rp " . number_format($product->price, 2, ',','.') }}</td>
-                                        <td>{{ $product->stock }}</td>
-                                        <td class="text-center">
-                                            <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('products.destroy', $product->id) }}" method="POST">
-                                                <a href="{{ route('products.show', $product->id) }}" class="btn btn-sm btn-dark">SHOW</a>
-                                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-primary">EDIT</a>
+                                            <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('transaksi_penjualan.destroy', $transaksi->id) }}" method="POST">
+                                                <a href="{{ route('transaksi_penjualan.show', $transaksi->id) }}" class="btn btn-sm btn-dark">SHOW</a>
+                                                <a href="{{ route('transaksi_penjualan.edit', $transaksi->id) }}" class="btn btn-sm btn-primary">EDIT</a>
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger">HAPUS</button>
@@ -57,7 +58,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        {{ $products->links() }}
+                        {{ $transaksi_penjualan->links() }}
                     </div>
                 </div>
             </div>
