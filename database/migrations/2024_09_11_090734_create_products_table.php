@@ -41,11 +41,10 @@ return new class extends Migration
         Schema::create('transaksi_penjualan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('products_id')->nullable()->index();
+            $table->foreignId('suppliers_id')->nullable()->index();
             $table->timestamps();
             $table->string('nama_kasir');
-            $table->string('nama_products');
             $table->foreignId('product_category_id')->nullable()->index();
-            $table->string('harga');
             $table->integer('jumlah_pembelian');
             $table->string('total_harga');
         });

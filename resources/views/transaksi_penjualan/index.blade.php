@@ -36,9 +36,9 @@
                                     <tr>
                                         <td>{{ $transaksi->created_at }}</td>
                                         <td>{{ $transaksi->nama_kasir }}</td>
-                                        <td>{{ $transaksi->nama_products }}</td>
+                                        <td>{{ $transaksi->title }}</td>
                                         <td>{{ $transaksi->product_category_name }}</td>
-                                        <td>{{ "Rp " . number_format($transaksi->harga, 2, ',','.') }}</td>
+                                        <td>{{ "Rp " . number_format($transaksi->price, 2, ',','.') }}</td>
                                         <td>{{ $transaksi->jumlah_pembelian }}</td>
                                         <td>{{ "Rp " . number_format($transaksi->total_harga, 2, ',','.') }}</td>
                                         <td class="text-center">
