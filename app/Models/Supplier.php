@@ -11,7 +11,13 @@ class Supplier extends Model
 
     // protected $table = 'supplier';
 
-    protected $fillable = ['supplier_addres', 'supplier_name', 'no_hp', 'pic_supplier'];
+    // protected $fillable = ['supplier_addres', 'supplier_name', 'no_hp', 'pic_supplier'];
 
-    public $timestamps = true;
+    public function get_suppliers() {
+        // get all transactions with product and category details
+        $sql = $this->select("suppliers.*");
+                    
+        return $sql;
+    
+}
 }

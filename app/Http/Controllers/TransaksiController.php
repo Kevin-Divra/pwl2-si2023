@@ -19,7 +19,6 @@ class TransaksiController extends Controller
     public function index() : View
     {
 
-
         $transaksi = new TransaksiPenjualan();
         $transaksi_penjualan = $transaksi->get_transaksi()
                             ->latest()

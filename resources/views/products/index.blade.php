@@ -33,7 +33,7 @@
                                 @forelse ($products as $product)
                                     <tr>
                                         <td class="text-center">
-                                            <img src="{{ asset('/storage/products/'.$product->irage) }}" class="rounded" alt="width: 150px">
+                                            <img src="{{ asset('/storage/images/'.$product->image) }}" class="rounded" alt="width: 150px">
                                         </td>
                                         <td>{{ $product->supplier_name }}</td>
                                         <td>{{ $product->title }}</td>
