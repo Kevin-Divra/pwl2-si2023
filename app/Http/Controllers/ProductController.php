@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -89,4 +90,104 @@ class ProductController extends Controller
         // Redirect ke halaman index dengan pesan error
         return redirect()->route('products.index')->with(['error' => 'Data gagal Disimpan']);
 }
+
+    /**
+     * show
+     * 
+     * @param mixed $id
+     * @return View
+     */
+
+    public function show(string $id): View
+    {
+        // get product id
+        $product_model = new Product;
+        $product = $product_model->get_product()->where("products.id", $id)->firstOrFail();
+
+        return view('products.show', compact('product'));
+    }
+
+    /**
+     * edit
+     * 
+     * @param mixed $id
+     * @return View
+     */
+
+    public function edit(string $id): View
+    {
+        //get product by ID
+        $product_model = new Product;
+        $data['product'] = $product_model->get_product()->where("products.id", $id)->firstOrFail();
+        
+        $supplier_model = new Supplier;
+
+        $data['categories'] = $product_model->get_category_product()->get();
+        $data['suppliers_'] = $supplier_model->get_suppliers()->get();
+
+
+        return view('products.edit', compact('data'));
+
+    }
+
+    /**
+     * update
+     * 
+     * @param mixed $request
+     * @param mixed $id
+     * @return RedirectResponse
+     */
+
+    public function update(Request $request, $id): RedirectResponse
+    {
+        $request->validate([
+            'image'                 => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'title'                 => 'required|min:5',
+            'description'           => 'required|min:10',
+            'price'                 => 'required|numeric',
+            'stock'                 => 'required|numeric',
+        ]);
+
+        $product_model = new Product;
+        $product = $product_model->get_product()->where('products.id', $id)->firstOrFail();
+        
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image->storeAs('public/images', $image->hashName());
+
+            Storage::delete('public/images/'. $product->image);
+
+            $product->update([
+                'image'                 => $image->hashName(),
+                'title'                 => $request->title,
+                'product_category_id'   => $request->product_category_id,
+                'supplier_id'           => $request->suppliers_id,
+                'description'           => $request->description,
+                'price'                 => $request->price,
+                'stock'                 => $request->stock,
+            ]);
+        } else {
+            $product->update([
+                'title'                 => $request->title,
+                'product_category_id'   => $request->product_category_id,
+                'supplier_id'           => $request->suppliers_id,
+                'description'           => $request->description,
+                'price'                 => $request->price,
+                'stock'                 => $request->stock,
+            ]);
+        }
+
+        return redirect()->route('products.index')->with(['success' => 'Data Berhasil Diubah']);
+    }
+
+    public function destroy($id): RedirectResponse
+    {
+        $product = Product::findOrFail($id);
+
+        Storage::delete('public/images/' . $product->image);
+
+        $product->delete();
+
+        return redirect()->route('products.index')->with(['success' => 'Data Berhasil Dihapus']);
+    }
 }
